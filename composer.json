@@ -1,0 +1,17 @@
+{
+    "name": "hieupv/nf-advance-permalink",
+    "authors": [{
+        "name": "Hieupv",
+        "email": "hieupv.est@gmail.com"
+    }],
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "require": {
+        "hieupv/nf-wordpress": "^1.2",
+        "illuminate/http": "^5.2",
+        "illuminate/pagination": "^5.2"
+    }
+}
