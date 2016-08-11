@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Models\Rule;
+use Illuminate\Database\Capsule\Manager as Capsule;
 
 class RewriteRuler
 {
