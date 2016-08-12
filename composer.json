@@ -12,6 +12,8 @@
     "require": {
         "hieupv/nf-wordpress": "^1.2",
         "illuminate/http": "^5.2",
-        "illuminate/pagination": "^5.2"
+        "illuminate/pagination": "^5.2",
+        "illuminate/cache": "^5.2",
+        "monolog/monolog": "^1.21"
     }
 }

@@ -2,6 +2,7 @@
 
 use App\Admin;
 use App\Database;
+use App\Log;
 use App\Models\Rule;
 use App\RewriteRuler;
 
@@ -21,17 +22,52 @@ Text Domain: http://codersvn.com/wordpress/plugins/nf-advance-permalink
 require __DIR__ . '/vendor/autoload.php';
 
 global $wpdb;
+
 define('DB_TABLE_NAME', $wpdb->prefix . 'nf_advance_permalink');
+define('NF_ADVANCE_PERMALINK_DEBUG', true);
+define('NF_ADVANCE_PERMALINK_LOG_PATH', __DIR__ . '/resources/logs/log.log');
 
 class NFAdvancePermalink
 {
-    public function __construct()
+    /**
+     * @var Singleton The reference to *Singleton* instance of this class
+     */
+    private static $instance;
+    /**
+     * @var array
+     *
+     * Aggregate of rewrite rules
+     */
+    private $rules;
+    /**
+     * Returns the *Singleton* instance of this class.
+     *
+     * @return Singleton The *Singleton* instance.
+     */
+    public static function getInstance()
     {
-        new Admin;
-        new Database(__FILE__);
+        if (null === static::$instance) {
+            static::$instance = new static();
+        }
+
+        return static::$instance;
+    }
+    /**
+     * Protected constructor to prevent creating a new instance of the
+     * *Singleton* via the `new` operator from outside of this class.
+     */
+    protected function __construct()
+    {
+        if (is_admin()) {
+            new Admin;
+            new Database(__FILE__);
+            add_action('admin_enqueue_scripts', [$this, 'load_scripts']);
+        }
+        $this->rules = Rule::all();
         add_action('init', [$this, 'custom_rewrite_basic']);
-        add_action('admin_enqueue_scripts', [$this, 'load_scripts']);
         add_filter('term_link', [$this, 'term_link_filter'], 10, 3);
+        $log = new Log;
+        $log->info('Excute Mysql Query to get the rules');
     }
     public function custom_rewrite_basic()
     {
@@ -45,11 +81,11 @@ class NFAdvancePermalink
     }
     public function term_link_filter($url, $term, $taxonomy)
     {
-        $rules = Rule::all();
+        $rules = $this->rules;
         $t     = $rules->search(function ($item) use ($term) {
             return $item->entity_id == $term->term_id;
         });
-        if (isset($t) && !is_bool($t) && $t != false) {
+        if (isset($t) && is_int($t)) {
             return get_site_url(null, $rules[$t]->regex);
         } else {
             return $url;
@@ -57,4 +93,4 @@ class NFAdvancePermalink
     }
 
 }
-new NFAdvancePermalink;
+NFAdvancePermalink::getInstance();

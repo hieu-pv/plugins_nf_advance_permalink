@@ -31,6 +31,10 @@ class ComposerStaticInitc58585ba77b7775919392be615252379
         array (
             'NFWP\\' => 5,
         ),
+        'M' => 
+        array (
+            'Monolog\\' => 8,
+        ),
         'I' => 
         array (
             'Illuminate\\View\\' => 16,
@@ -43,6 +47,7 @@ class ComposerStaticInitc58585ba77b7775919392be615252379
             'Illuminate\\Database\\' => 20,
             'Illuminate\\Contracts\\' => 21,
             'Illuminate\\Container\\' => 21,
+            'Illuminate\\Cache\\' => 17,
         ),
         'C' => 
         array (
@@ -91,6 +96,10 @@ class ComposerStaticInitc58585ba77b7775919392be615252379
         array (
             0 => __DIR__ . '/..' . '/hieupv/nf-wordpress/src',
         ),
+        'Monolog\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
+        ),
         'Illuminate\\View\\' => 
         array (
             0 => __DIR__ . '/..' . '/illuminate/view',
@@ -130,6 +139,10 @@ class ComposerStaticInitc58585ba77b7775919392be615252379
         'Illuminate\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/illuminate/container',
+        ),
+        'Illuminate\\Cache\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/illuminate/cache',
         ),
         'Carbon\\' => 
         array (
