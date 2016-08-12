@@ -2,7 +2,6 @@
 
 use App\Admin;
 use App\Database;
-use App\Log;
 use App\Models\Rule;
 use App\RewriteRuler;
 
@@ -64,14 +63,13 @@ class NFAdvancePermalink
             add_action('admin_enqueue_scripts', [$this, 'load_scripts']);
         }
         $this->rules = Rule::all();
-        add_action('init', [$this, 'custom_rewrite_basic']);
+        add_action('init', [$this, 'custom_rewrite']);
         add_filter('term_link', [$this, 'term_link_filter'], 10, 3);
-        $log = new Log;
-        $log->info('Excute Mysql Query to get the rules');
     }
-    public function custom_rewrite_basic()
+    public function custom_rewrite()
     {
-        RewriteRuler::render();
+        $rewriteRules = RewriteRuler::getInstance();
+        $rewriteRules->render();
     }
     public function load_scripts()
     {
@@ -86,7 +84,8 @@ class NFAdvancePermalink
             return $item->entity_id == $term->term_id;
         });
         if (isset($t) && is_int($t)) {
-            return get_site_url(null, $rules[$t]->regex);
+            $url = get_site_url(null, $rules[$t]->regex);
+            return substr($url, count($url) - 1) == '/' ? $url : $url . '/';
         } else {
             return $url;
         }

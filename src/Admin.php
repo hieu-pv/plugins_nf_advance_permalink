@@ -61,7 +61,10 @@ class Admin extends AdminMenu
             $rule->entity_id = $data['entity_id'];
             $rule->regex     = $data['regex'];
             $rule->save();
-            RewriteRuler::render();
+
+            $rewriteRules = RewriteRuler::getNewInstance();
+            $rewriteRules->render();
+
             flush_rewrite_rules(true);
             wp_redirect(admin_url('admin.php?page=nf-advance-permalink&success=true'));
         } else {
